@@ -1,7 +1,7 @@
 from folders import blame_folder
 
 
-def test_blame_file(git_repo):
+def test_blame_folder(git_repo):
     path = git_repo.workspace
     folder = path / "folder"
     folder.mkdir()
