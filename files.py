@@ -10,7 +10,9 @@ def format_author(author: Actor) -> str:
     return f"{author.name} <{author.email}>"
 
 
-def blame_file(repo: Repo, blob: Blob, *, ignore_revs: Optional[list[str]]=None) -> tuple[int, list[tuple[str, int]]]:
+def blame_file(
+    repo: Repo, blob: Blob, *, ignore_revs: Optional[list[str]] = None
+) -> tuple[int, list[tuple[str, int]]]:
     if not ignore_revs:
         ignore_revs = []
     blame = repo.blame(file=str(blob.path), rev=None, rev_opts=ignore_revs)
