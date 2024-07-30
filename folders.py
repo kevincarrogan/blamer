@@ -11,7 +11,7 @@ def blame_folder(repo, tree, *, ignore_revs=None):
     blobs = []
 
     for sub_tree in tree.trees:
-        total_from_tree, aggregated_users_totals, sub_items = blame_folder(
+        name, total_from_tree, aggregated_users_totals, sub_items = blame_folder(
             repo, sub_tree, ignore_revs=ignore_revs
         )
         total += total_from_tree
@@ -19,19 +19,17 @@ def blame_folder(repo, tree, *, ignore_revs=None):
             user_totals.setdefault(user, 0)
             user_totals[user] += user_total
         sub_trees.append(
-            (sub_tree.name, (total_from_tree, aggregated_users_totals), sub_items),
+            (name, total_from_tree, aggregated_users_totals, sub_items),
         )
 
     for blob in tree.blobs:
-        total_from_blob, aggregated_users_totals = blame_file(
+        name, total_from_blob, aggregated_users_totals = blame_file(
             repo, blob, ignore_revs=ignore_revs
         )
         total += total_from_blob
         for user, user_total in aggregated_users_totals:
             user_totals.setdefault(user, 0)
             user_totals[user] += user_total
-        blobs.append(
-            (blob.name, (total_from_blob, aggregated_users_totals)),
-        )
+        blobs.append((name, total_from_blob, aggregated_users_totals))
 
-    return (total, list(user_totals.items()), sub_trees + blobs)
+    return (tree.name, total, list(user_totals.items()), sub_trees + blobs)

@@ -34,6 +34,7 @@ def test_blame_folder(git_repo):
     tree = git_repo.api.tree()["folder"]
 
     assert blame_folder(git_repo.api, tree) == (
+        "folder",
         3,
         [
             ("Tony Stark <tony@avengers.com>", 2),
@@ -42,13 +43,11 @@ def test_blame_folder(git_repo):
         [
             (
                 "test.txt",
-                (
-                    3,
-                    [
-                        ("Tony Stark <tony@avengers.com>", 2),
-                        ("Steve Rogers <captain@avengers.com>", 1),
-                    ],
-                ),
+                3,
+                [
+                    ("Tony Stark <tony@avengers.com>", 2),
+                    ("Steve Rogers <captain@avengers.com>", 1),
+                ],
             ),
         ],
     )
@@ -81,6 +80,7 @@ def test_blame_folder_with_sub_folders(git_repo):
     tree = git_repo.api.tree()["folder"]
 
     assert blame_folder(git_repo.api, tree) == (
+        "folder",
         2,
         [
             ("Steve Rogers <captain@avengers.com>", 1),
@@ -89,10 +89,11 @@ def test_blame_folder_with_sub_folders(git_repo):
         [
             (
                 "sub_folder",
-                (1, [("Steve Rogers <captain@avengers.com>", 1)]),
-                [("bottom.txt", (1, [("Steve Rogers <captain@avengers.com>", 1)]))],
+                1,
+                [("Steve Rogers <captain@avengers.com>", 1)],
+                [("bottom.txt", 1, [("Steve Rogers <captain@avengers.com>", 1)])],
             ),
-            ("top.txt", (1, [("Tony Stark <tony@avengers.com>", 1)])),
+            ("top.txt", 1, [("Tony Stark <tony@avengers.com>", 1)]),
         ],
     )
 
@@ -130,6 +131,7 @@ def test_blame_folder_ignore_revs(git_repo):
     tree = git_repo.api.tree()["folder"]
 
     assert blame_folder(git_repo.api, tree, ignore_revs=[str(commit)]) == (
+        "folder",
         2,
         [
             ("Tony Stark <tony@avengers.com>", 1),
@@ -138,13 +140,11 @@ def test_blame_folder_ignore_revs(git_repo):
         [
             (
                 "test.txt",
-                (
-                    2,
-                    [
-                        ("Tony Stark <tony@avengers.com>", 1),
-                        ("Steve Rogers <captain@avengers.com>", 1),
-                    ],
-                ),
+                2,
+                [
+                    ("Tony Stark <tony@avengers.com>", 1),
+                    ("Steve Rogers <captain@avengers.com>", 1),
+                ],
             )
         ],
     )
@@ -185,6 +185,7 @@ def test_blame_folder_with_sub_folders_ignore_revs(git_repo):
     tree = git_repo.api.tree()["folder"]
 
     assert blame_folder(git_repo.api, tree, ignore_revs=[str(commit)]) == (
+        "folder",
         3,
         [
             ("Steve Rogers <captain@avengers.com>", 1),
@@ -193,9 +194,10 @@ def test_blame_folder_with_sub_folders_ignore_revs(git_repo):
         [
             (
                 "sub_folder",
-                (1, [("Steve Rogers <captain@avengers.com>", 1)]),
-                [("bottom.txt", (1, [("Steve Rogers <captain@avengers.com>", 1)]))],
+                1,
+                [("Steve Rogers <captain@avengers.com>", 1)],
+                [("bottom.txt", 1, [("Steve Rogers <captain@avengers.com>", 1)])],
             ),
-            ("top.txt", (2, [("Tony Stark <tony@avengers.com>", 2)])),
+            ("top.txt", 2, [("Tony Stark <tony@avengers.com>", 2)]),
         ],
     )

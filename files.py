@@ -2,7 +2,6 @@ from typing import Optional
 
 from git import Repo
 from git.objects.blob import Blob
-from git.objects.commit import Commit
 from git.util import Actor
 
 
@@ -25,4 +24,4 @@ def blame_file(
         committers.setdefault(format_author(commit.author), 0)
         committers[formatted_author] += len(lines)
 
-    return (total, list(committers.items()))
+    return (blob.name, total, list(committers.items()))

@@ -32,6 +32,7 @@ def test_blame_file(git_repo):
     blob = git_repo.api.tree()["test.txt"]
 
     assert blame_file(git_repo.api, blob) == (
+        "test.txt",
         3,
         [
             ("Tony Stark <tony@avengers.com>", 2),
@@ -71,6 +72,7 @@ def test_blame_file_ignore_revs(git_repo):
     blob = git_repo.api.tree()["test.txt"]
 
     assert blame_file(git_repo.api, blob, ignore_revs=[str(commit)]) == (
+        "test.txt",
         2,
         [
             ("Tony Stark <tony@avengers.com>", 1),
